@@ -1,0 +1,21 @@
+{% extends 'service/base.html' %}
+{% block title %}distribution_form{% endblock %}
+{% block content %}
+{% if object %}
+<h1 class="text-center mt-5">Редактирование рассылки</h1>
+{% else %}
+<h1 class="text-center mt-5">Создать новую рассылку</h1>
+{% endif %}
+<div class="card text-bg-dark mb-3 mt-5 mx-auto" style="max-width: 40rem;">
+    <div class="card-body">
+        <form method="post">
+            {{ form.as_p }}
+            {% csrf_token %}
+            {% if object %}
+                <a href="{% url 'service:distribution_detail' object.pk %}"><button type="button" class="btn btn-outline-primary btn-sm">Отмена</button></a>
+            {% endif %}
+            <button type="submit" class="btn btn-outline-primary btn-sm">Сохранить</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

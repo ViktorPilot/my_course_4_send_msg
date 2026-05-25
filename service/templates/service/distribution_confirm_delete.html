@@ -1,0 +1,15 @@
+{% extends 'service/base.html' %}
+{% block title %}distribution_delete{% endblock %}
+{% block content %}
+<h1 class="text-center mt-5">Удаление рассылки</h1>
+<div class="card text-bg-dark mb-3 mt-5 mx-auto" style="max-width: 20rem;">
+    <div class="card-body text-center">
+        <h5 class="text-center">Подтвердите удаление рассылки ({{object.first_sending}})</h5>
+        <form method="post" class="mt-3">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-danger btn-sm me-5">Удалить</button>
+            <a href="{% url 'service:distribution_detail' object.pk %}"><button type="button" class="btn btn-outline-primary btn-sm">Отмена</button></a>
+        </form>
+    </div>
+</div>
+{% endblock %}

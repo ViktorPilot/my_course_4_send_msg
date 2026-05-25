@@ -24,7 +24,7 @@ from service import urls
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include(urls, namespace='service'))
+    path("service/", include(urls, namespace='service'))
 ]
 
 if settings.DEBUG:
