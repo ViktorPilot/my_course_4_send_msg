@@ -59,11 +59,11 @@ class Distribution(models.Model):
 
 class Attemp(models.Model):
     CHOICES_STATUS_2 = [('success', 'Успешно'), ('unsuccess', 'Не успешно')]
-    attemp_date = models.DateTimeField(verbose_name='Дата и время попытки', null=True, blank=True)
+    attempt_time = models.DateTimeField(verbose_name='Дата и время попытки', null=True, blank=True)
     status_2 = models.CharField(max_length=30, verbose_name='Статус', choices=CHOICES_STATUS_2, default='Успешно')
-    answer_server = models.TextField(verbose_name='Ответ почтового сервера', null=True, blank=True)
-    distribution_message_2 = models.ForeignKey('Distribution', on_delete=models.CASCADE,
-                                               related_name='distribution_message_2')
+    server_response = models.TextField(verbose_name='Ответ почтового сервера', null=True, blank=True)
+    mailing = models.ForeignKey('Distribution', on_delete=models.CASCADE,
+                                               related_name='mailing')
 
     def __str__(self):
         return self.status_2

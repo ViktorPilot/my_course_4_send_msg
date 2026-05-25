@@ -3,7 +3,7 @@ from django.urls import path
 
 from service.views import ClientsListView, ClientsDetailView, ClientsUpdateView, ClientsCreateView, ClientsDeleteView, \
     MessageListView, MessageUpdateView, MessageCreateView, MessageDeleteView, MessageDetailView, DistributionListView, \
-    DistributionUpdateView, DistributionCreateView, DistributionDeleteView, DistributionDetailView
+    DistributionUpdateView, DistributionCreateView, DistributionDeleteView, DistributionDetailView, AttempListView
 
 app_name = ServiceConfig.name
 
@@ -23,4 +23,5 @@ urlpatterns = [
     path("distribution/<int:pk>/update/", DistributionUpdateView.as_view(), name="distribution_update"),
     path("distribution/create/", DistributionCreateView.as_view(), name="distribution_create"),
     path("distribution/<int:pk>/delete/", DistributionDeleteView.as_view(), name="distribution_delete"),
+    path("attemp/", AttempListView.as_view(), name="attemp_list"),
 ]
