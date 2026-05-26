@@ -1,4 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from service.models import Clients, Message, Distribution, Attemp
 
+admin.site.register(Clients)
+admin.site.register(Message)
+admin.site.register(Distribution)
+admin.site.register(Attemp)

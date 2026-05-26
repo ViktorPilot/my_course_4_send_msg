@@ -1,0 +1,188 @@
+[
+{
+    "model": "service.clients",
+    "pk": 1,
+    "fields": {
+        "email": "veterwind666@rambler.ru",
+        "name": "БВС",
+        "comment": "что то"
+    }
+},
+{
+    "model": "service.clients",
+    "pk": 2,
+    "fields": {
+        "email": "vvvv@mail.ru",
+        "name": "Иванов",
+        "comment": "чисто"
+    }
+},
+{
+    "model": "service.message",
+    "pk": 1,
+    "fields": {
+        "theme": "Сообщение_1",
+        "text": "что то"
+    }
+},
+{
+    "model": "service.distribution",
+    "pk": 1,
+    "fields": {
+        "start_time": "2026-05-24T12:12:00Z",
+        "end_time": "2026-05-24T12:15:00Z",
+        "status": "finished",
+        "message": 1,
+        "recipients": [
+            1
+        ]
+    }
+},
+{
+    "model": "service.distribution",
+    "pk": 2,
+    "fields": {
+        "start_time": "2026-05-25T18:24:00Z",
+        "end_time": "2026-05-26T21:12:00Z",
+        "status": "progress",
+        "message": 1,
+        "recipients": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "service.distribution",
+    "pk": 3,
+    "fields": {
+        "start_time": "2026-05-24T12:12:00Z",
+        "end_time": "2026-05-25T12:15:00Z",
+        "status": "finished",
+        "message": 1,
+        "recipients": [
+            1
+        ]
+    }
+},
+{
+    "model": "service.attemp",
+    "pk": 2,
+    "fields": {
+        "attempt_time": "2026-05-25T20:08:39.164Z",
+        "status_2": "Не успешно",
+        "server_response": "\"to\" argument must be a list or tuple",
+        "mailing": 2
+    }
+},
+{
+    "model": "service.attemp",
+    "pk": 3,
+    "fields": {
+        "attempt_time": "2026-05-25T20:08:39.461Z",
+        "status_2": "Не успешно",
+        "server_response": "\"to\" argument must be a list or tuple",
+        "mailing": 2
+    }
+},
+{
+    "model": "service.attemp",
+    "pk": 4,
+    "fields": {
+        "attempt_time": "2026-05-25T20:12:11.117Z",
+        "status_2": "Успешно",
+        "server_response": "Сообщений нет",
+        "mailing": 2
+    }
+},
+{
+    "model": "service.attemp",
+    "pk": 5,
+    "fields": {
+        "attempt_time": "2026-05-25T20:12:12.971Z",
+        "status_2": "Успешно",
+        "server_response": "Сообщений нет",
+        "mailing": 2
+    }
+},
+{
+    "model": "service.attemp",
+    "pk": 6,
+    "fields": {
+        "attempt_time": "2026-05-25T20:13:58.459Z",
+        "status_2": "Успешно",
+        "server_response": "Сообщений нет",
+        "mailing": 2
+    }
+},
+{
+    "model": "service.attemp",
+    "pk": 7,
+    "fields": {
+        "attempt_time": "2026-05-25T20:14:00.724Z",
+        "status_2": "Успешно",
+        "server_response": "Сообщений нет",
+        "mailing": 2
+    }
+},
+{
+    "model": "service.attemp",
+    "pk": 8,
+    "fields": {
+        "attempt_time": "2026-05-25T20:22:22.198Z",
+        "status_2": "Успешно",
+        "server_response": "Сообщений нет",
+        "mailing": 2
+    }
+},
+{
+    "model": "service.attemp",
+    "pk": 9,
+    "fields": {
+        "attempt_time": "2026-05-25T20:22:26.509Z",
+        "status_2": "Успешно",
+        "server_response": "Сообщений нет",
+        "mailing": 2
+    }
+},
+{
+    "model": "service.attemp",
+    "pk": 10,
+    "fields": {
+        "attempt_time": "2026-05-26T08:43:53.560Z",
+        "status_2": "Успешно",
+        "server_response": "Сообщений нет",
+        "mailing": 2
+    }
+},
+{
+    "model": "service.attemp",
+    "pk": 11,
+    "fields": {
+        "attempt_time": "2026-05-26T08:43:55.935Z",
+        "status_2": "Успешно",
+        "server_response": "Сообщений нет",
+        "mailing": 2
+    }
+},
+{
+    "model": "service.attemp",
+    "pk": 12,
+    "fields": {
+        "attempt_time": "2026-05-26T08:45:03.297Z",
+        "status_2": "Успешно",
+        "server_response": "Сообщений нет",
+        "mailing": 2
+    }
+},
+{
+    "model": "service.attemp",
+    "pk": 13,
+    "fields": {
+        "attempt_time": "2026-05-26T08:45:04.587Z",
+        "status_2": "Успешно",
+        "server_response": "Сообщений нет",
+        "mailing": 2
+    }
+}
+]

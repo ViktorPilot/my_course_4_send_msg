@@ -28,6 +28,7 @@
                             <li><a class="dropdown-item" aria-current="page" href="{% url 'service:clients_create' %}">Добавить
                                 клиента</a></li>
                         </ul>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">Сообщения</a>
@@ -40,6 +41,7 @@
                             <li><a class="dropdown-item" aria-current="page" href="{% url 'service:message_create' %}">Добавить
                                 сообщение</a></li>
                         </ul>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">Рассылки</a>
@@ -61,10 +63,29 @@
                            href="{% url 'service:attemp_list' %}">Попытки рассылок</a>
                     </li>
                 </ul>
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">Профиль пользователя</a>
+                        <form method="post", action="{% url 'users:logout' %}">
+                        <ul class="dropdown-menu">
+                            {% csrf_token %}
+                            {% if user.is_authenticated %}
+                            <li><button type="submit" class="p-2 btn w-100">Выйти</button></li>
+                            {% else %}
+                            <li><a class="dropdown-item" aria-current="page" href="{% url 'users:register' %}">Зарегистрироваться</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" aria-current="page" href="{% url 'users:login' %}">Войти</a></li>
+                            {% endif %}
+                        </ul>
+                        </form>
+                    </li>
+                </ul>
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
+
             </div>
         </div>
     </nav>
