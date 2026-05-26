@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy
 from django.shortcuts import render
@@ -59,12 +61,25 @@ class DistributionDetailView(DetailView):
 
     def post(self, request, *args, **kwargs):
         obj  = self.get_object()
-        list_emails = obj.addressee.all().values_list('email', flat=True)
-        recipient_list = [i for i in list_emails]
-        subject = obj.distribution_message.theme
-        message = obj.distribution_message.text
-        send_mail(subject=subject, message= message, from_email=EMAIL_HOST_USER, recipient_list=recipient_list)
-        return render(request,'service/distribution_success.html')
+        if obj is not None and obj.start_time.replace(
+                tzinfo=None) < datetime.now() < obj.end_time.replace(tzinfo=None):
+            emails = list(obj.recipients.values_list('email', flat=True))
+            for email in emails:
+                try:
+                    send_mail(obj.message.theme, obj.message.text, EMAIL_HOST_USER, [email])
+                    attempt_time = datetime.now()
+                    status = 'Успешно'
+                    server_response = 'Сообщений нет'
+                except Exception as e:
+                    attempt_time = datetime.now()
+                    status = 'Не успешно'
+                    server_response = str(e)
+                Attemp.objects.create(attempt_time=attempt_time, status_2=status, server_response=server_response,
+                                      mailing=obj)
+            return render(request,'service/distribution_success.html')
+        else:
+            return render(request, 'service/distribution_unsuccess.html')
+
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
@@ -89,6 +104,13 @@ class DistributionDeleteView(DeleteView):
 class AttempListView(ListView):
     model = Attemp
 
+def main(requests):
+    distributions = Distribution.objects.all()
+    distribution_count = distributions.count()
+    distributions_active = Distribution.objects.filter(status='progress').count()
+    clients_count = Clients.objects.all().count()
+    context = {'distribution_count':distribution_count,'distributions_active':distributions_active,'clients_count':clients_count}
+    return render(requests, 'service/main.html', context)
 
 
 

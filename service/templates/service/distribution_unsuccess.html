@@ -1,0 +1,10 @@
+{% extends 'service/base.html' %}
+{% block title %}distribution_success{% endblock %}
+{% block content %}
+<div class="card text-bg-dark mb-3 mt-5 mx-auto" style="max-width: 20rem;">
+    <div class="card-body text-center">
+        <h5 class="text-center">Отправка вне указанных сроков запрещена!</h5>
+            <a href="{% url 'service:distribution_list' %}"><button type="button" class="btn btn-outline-primary btn-sm">К списку рассылок</button></a>
+    </div>
+</div>
+{% endblock %}

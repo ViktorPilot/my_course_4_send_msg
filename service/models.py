@@ -45,7 +45,9 @@ class Distribution(models.Model):
             self.status = 'create'
         elif datetime.datetime.now() > self.end_time.replace(tzinfo=None):
             self.status = 'finished'
-        self.status = 'progress'
+        else:
+            self.status = 'progress'
+        self.save()
 
     def __str__(self):
         return self.status
