@@ -22,9 +22,10 @@ from django.conf import settings
 
 
 urlpatterns = [
+    path("accounts/", include('django.contrib.auth.urls')),
     path("admin/", admin.site.urls),
     path("service/", include('service.urls', namespace='service')),
-    path("users/", include('users.urls', namespace='users'))
+    path("users/", include('users.urls', namespace='users')),
 ]
 
 if settings.DEBUG:
