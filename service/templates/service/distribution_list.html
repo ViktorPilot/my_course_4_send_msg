@@ -7,6 +7,7 @@
     <tr>
         <th scope="col" class="text-uppercase">id</th>
         <th scope="col" class="text-uppercase">Дата и время первой отправки</th>
+        <th scope="col" class="text-uppercase">Статус</th>
         <th scope="col" class="text-uppercase"></th>
     </tr>
     </thead>
@@ -15,6 +16,7 @@
     <tr>
         <th scope="row" class="fst-italic">{{ object.pk }}</th>
         <td class="fst-italic">{{ object.start_time }}</td>
+        <td class="fst-italic">{{ object.status }}</td>
         <td><a href="{% url 'service:distribution_detail' object.pk %}">
             <button type="button" class="btn btn-outline-primary btn-sm">Подробно</button></a>
         </td>

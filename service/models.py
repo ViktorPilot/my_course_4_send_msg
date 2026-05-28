@@ -2,11 +2,14 @@ import datetime
 
 from django.db import models
 
+from users.models import CustomUser
+
 
 class Clients(models.Model):
     email = models.CharField(max_length=50, verbose_name='Электронная почта', unique=True)
     name = models.CharField(max_length=100, verbose_name='ФИО')
     comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='clients', null=True, blank=True)
 
     def __str__(self):
         return self.email
@@ -21,6 +24,7 @@ class Clients(models.Model):
 class Message(models.Model):
     theme = models.CharField(max_length=100, verbose_name='Тема письма')
     text = models.TextField(verbose_name='Текст письма', null=True, blank=True)
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='message', null=True, blank=True)
 
     def __str__(self):
         return self.theme
@@ -39,6 +43,7 @@ class Distribution(models.Model):
     status = models.CharField(max_length=30, verbose_name='Статус', choices=CHOICES_STATUS, default='Создана')
     message = models.ForeignKey('Message', on_delete=models.CASCADE, related_name='distribution',)
     recipients = models.ManyToManyField('Clients', related_name='distribution')
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='distribution', null=True, blank=True)
 
     def update_status(self):
         if datetime.datetime.now() < self.start_time.replace(tzinfo=None):
@@ -66,6 +71,8 @@ class Attemp(models.Model):
     server_response = models.TextField(verbose_name='Ответ почтового сервера', null=True, blank=True)
     mailing = models.ForeignKey('Distribution', on_delete=models.CASCADE,
                                                related_name='mailing')
+    count_emails = models.PositiveIntegerField(verbose_name='Количество получателей', default=1)
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='attemp', null=True, blank=True)
 
     def __str__(self):
         return self.status_2

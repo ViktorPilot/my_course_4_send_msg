@@ -26,4 +26,5 @@ urlpatterns = [
     path("distribution/create/", DistributionCreateView.as_view(), name="distribution_create"),
     path("distribution/<int:pk>/delete/", DistributionDeleteView.as_view(), name="distribution_delete"),
     path("attemp/", AttempListView.as_view(), name="attemp_list"),
+    path("statistic/", views.get_statistic, name="statistic"),
 ]

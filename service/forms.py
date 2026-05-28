@@ -18,19 +18,20 @@ class StyleMixin:
 class ClientsForm(StyleMixin, forms.ModelForm):
     class Meta:
         model = Clients
-        fields = '__all__'
+        exclude = ('owner',)
 
 
 class MessageForm(StyleMixin, forms.ModelForm):
     class Meta:
         model = Message
         fields = '__all__'
-
+        exclude = ('owner',)
 
 class DistributionForm(StyleMixin, forms.ModelForm):
     class Meta:
         model = Distribution
         fields = '__all__'
+        exclude = ('owner',)
 
     def clean(self):
         cleaned_data = super().clean()
