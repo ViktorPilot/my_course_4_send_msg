@@ -37,7 +37,7 @@ class Message(models.Model):
 
 
 class Distribution(models.Model):
-    CHOICES_STATUS = [('finished', 'Завершена'), ('create', 'Создана'), ('progress', 'Запущена')]
+    CHOICES_STATUS = [('finished', 'Завершена'), ('create', 'Создана'), ('progress', 'Запущена'), ('paused', 'Приостановлена')]
     start_time = models.DateTimeField(verbose_name='Дата и время первой отправки',)
     end_time = models.DateTimeField(verbose_name='Дата и время окончания отправки',)
     status = models.CharField(max_length=30, verbose_name='Статус', choices=CHOICES_STATUS, default='Создана')

@@ -12,6 +12,7 @@
     </thead>
     <tbody>
     {% for user in users %}
+    {% if request.user != user %}
     <tr class='text-center'>
         <td class="fst-italic">{{ user.id }}</td>
         <td class="fst-italic">{{ user.email }}</td>
@@ -21,6 +22,7 @@
         <td><a href="{% url 'users:users_block' user.pk %}"><button type="button" class="btn btn-outline-success btn-sm">Разблокировать пользователя</button></a></td>
         {% endif %}
     </tr>
+    {% endif %}
     {% endfor %}
 </table>
 {% endblock %}

@@ -9,6 +9,7 @@
         <th scope="col" class="text-uppercase">Дата и время первой отправки</th>
         <th scope="col" class="text-uppercase">Статус</th>
         <th scope="col" class="text-uppercase"></th>
+        <th scope="col" class="text-uppercase"></th>
     </tr>
     </thead>
     <tbody>
@@ -18,8 +19,26 @@
         <td class="fst-italic">{{ object.start_time }}</td>
         <td class="fst-italic">{{ object.status }}</td>
         <td><a href="{% url 'service:distribution_detail' object.pk %}">
-            <button type="button" class="btn btn-outline-primary btn-sm">Подробно</button></a>
+            <button type="button" class="btn btn-outline-primary btn-sm">Подробно</button>
+        </a>
         </td>
+        {% if request.user.groups.all|length != 0 %}
+        {% for group in request.user.groups.all %}
+        {% if group.name == 'manager' %}
+        <td>
+            <form method="post">
+                {% csrf_token %}
+                    <input type="hidden" name="pk" value="{{ object.pk }}">
+                    {% if object.status != 'paused' %}
+                    <button type="submit" class="btn btn-outline-danger btn-sm">Приостановить рассылку</button>
+                    {% else %}
+                    <button type="submit" class="btn btn-outline-success btn-sm">Возобновить рассылку</button>
+                    {% endif %}
+            </form>
+        </td>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
     </tr>
     {% endfor %}
 </table>

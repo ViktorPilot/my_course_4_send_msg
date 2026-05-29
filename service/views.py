@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -122,17 +122,30 @@ class DistributionListView(LoginRequiredMixin, ListView):
         if not user.groups.filter(name="manager").exists():
             queryset = queryset.filter(owner=user)
         for obj in queryset:
-            obj.update_status()
+            if not obj.status == 'paused':
+                obj.update_status()
         return queryset
+
+    def post(self, request, *args, **kwargs):
+        pk = request.POST.get('pk')
+        distribution = Distribution.objects.get(pk=pk)
+        if distribution.status != 'paused':
+            distribution.status = 'paused'
+        else:
+            distribution.status = 'create'
+        distribution.save()
+        return redirect('/service/distribution')
 
 
 class DistributionDetailView(LoginRequiredMixin, DetailView):
     model = Distribution
 
     def post(self, request, *args, **kwargs):
+        """Метод отправляет рассылку получателям при выполнении условий: если статус рассылки
+        не приостановлен модератором и текущее дата/время находятся в диапазоне возможного периода рассылки"""
         obj = self.get_object()
         if obj is not None and obj.start_time.replace(
-                tzinfo=None) < datetime.now() < obj.end_time.replace(tzinfo=None):
+                tzinfo=None) < datetime.now() < obj.end_time.replace(tzinfo=None) and obj.status != 'paused':
             emails = list(obj.recipients.values_list('email', flat=True))
             try:
                 send_mail(obj.message.theme, obj.message.text, EMAIL_HOST_USER, emails)
@@ -243,6 +256,5 @@ def get_statistic(requests):
     count_success = len([attemp for attemp in attemps if attemp.status_2 == 'Успешно'])
     count_unsuccess = len(attemps) - count_success
     message = sum([attemp.count_emails for attemp in attemps if attemp.status_2 == 'Успешно'])
-    context = {'count_success': count_success, 'count_unsuccess': count_unsuccess, 'message': message, }
+    context = {'count_success': count_success, 'count_unsuccess': count_unsuccess, 'message': message}
     return render(requests, 'service/statistic.html', context)
-
