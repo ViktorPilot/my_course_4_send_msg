@@ -11,4 +11,6 @@ urlpatterns = [
     path("logout/", CustomLogoutView.as_view(), name='logout'),
     path("email_confirm/<str:token>/", email_verification, name='email_confirm'),
     path("success_register/", views.success_register, name='success_register'),
+    path("list_users/", views.get_users, name='list_users'),
+    path("users_block/<int:pk>/", views.users_block, name='users_block'),
 ]

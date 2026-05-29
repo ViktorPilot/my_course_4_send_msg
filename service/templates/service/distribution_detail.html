@@ -28,6 +28,7 @@
             {{ obj.email }}
             {% endfor %}
         </td>
+        {% if request.user == distribution.owner %}
         <td><a href="{% url 'service:distribution_update' object.pk %}">
             <button type="button" class="btn btn-outline-primary btn-sm">Редактировать</button>
         </a></td>
@@ -40,6 +41,11 @@
                 <button type="submit" class="btn btn-outline-success btn-sm">Отправить</button>
             </form>
         </td>
+        {% else %}
+        <td></td>
+        <td></td>
+        <td></td>
+        {% endif %}
     </tr>
 </table>
 {% endblock %}

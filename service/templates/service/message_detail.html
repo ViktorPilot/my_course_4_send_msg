@@ -17,8 +17,13 @@
         <th scope="row" class="fst-italic">{{ object.pk }}</th>
         <td class="fst-italic">{{ object.theme }}</td>
         <td class="fst-italic">{{ object.text }}</td>
+        {% if request.user == message.owner %}
         <td><a href="{% url 'service:message_update' object.pk %}"><button type="button" class="btn btn-outline-primary btn-sm">Редактировать</button></a></td>
         <td><a href="{% url 'service:message_delete' object.pk %}"><button type="button" class="btn btn-outline-danger btn-sm">Удалить</button></a></td>
+        {% else %}
+        <td></td>
+        <td></td>
+        {% endif %}
     </tr>
 </table>
 {% endblock %}

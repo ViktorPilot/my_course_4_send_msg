@@ -19,8 +19,13 @@
         <td class="fst-italic">{{ object.email }}</td>
         <td class="fst-italic">{{ object.name }}</td>
         <td class="fst-italic">{{ object.comment }}</td>
+        {% if request.user == clients.owner %}
         <td><a href="{% url 'service:clients_update' object.pk %}"><button type="button" class="btn btn-outline-primary btn-sm">Редактировать</button></a></td>
         <td><a href="{% url 'service:clients_delete' object.pk %}"><button type="button" class="btn btn-outline-danger btn-sm">Удалить</button></a></td>
+        {% else %}
+        <td></td>
+        <td></td>
+        {% endif %}
     </tr>
 </table>
 {% endblock %}
