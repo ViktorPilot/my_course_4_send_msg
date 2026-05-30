@@ -6,14 +6,17 @@ from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 
 from config.settings import EMAIL_HOST_USER
 from service.forms import ClientsForm, MessageForm, DistributionForm
 from service.models import Clients, Message, Distribution, Attemp
-from users.models import CustomUser
+
 
 
 class ClientsListView(LoginRequiredMixin, ListView):
+    """Контроллер страницы списка клиентов"""
     model = Clients
 
     def get_queryset(self):
@@ -27,12 +30,14 @@ class ClientsListView(LoginRequiredMixin, ListView):
             return queryset.filter(owner=user)
 
 
-
+@method_decorator(cache_page(60), name='dispatch')
 class ClientsDetailView(LoginRequiredMixin, DetailView):
+    """Контроллер страницы детальной информации о клиенте"""
     model = Clients
 
 
 class ClientsCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    """Контроллер страницы создания нового клиента"""
     model = Clients
     form_class = ClientsForm
     success_url = reverse_lazy('service:clients_list')
@@ -46,6 +51,7 @@ class ClientsCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 
 
 class ClientsUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    """Контроллер страницы редактирования информации о клиенте"""
     model = Clients
     form_class = ClientsForm
     success_url = reverse_lazy('service:clients_list')
@@ -59,11 +65,14 @@ class ClientsUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
 
 
 class ClientsDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    """Контроллер страницы удаления клиента"""
     model = Clients
     success_url = reverse_lazy('service:clients_list')
     permission_required = 'service.delete_clients'
 
+
 class MessageListView(LoginRequiredMixin, ListView):
+    """Контроллер страницы списка сообщений"""
     model = Message
 
     def get_queryset(self):
@@ -76,11 +85,15 @@ class MessageListView(LoginRequiredMixin, ListView):
         else:
             return queryset.filter(owner=user)
 
+
+@method_decorator(cache_page(60), name='dispatch')
 class MessageDetailView(LoginRequiredMixin, DetailView):
+    """Контроллер страницы детальной информации о сообщении"""
     model = Message
 
 
 class MessageCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    """Контроллер страницы создания нового сообщения"""
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy('service:message_list')
@@ -94,6 +107,7 @@ class MessageCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 
 
 class MessageUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    """Контроллер страницы редактирования сообщения"""
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy('service:message_list')
@@ -107,11 +121,14 @@ class MessageUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
 
 
 class MessageDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    """Контроллер страницы удаления сообщения"""
     model = Message
     success_url = reverse_lazy('service:message_list')
     permission_required = 'service.delete_message'
 
+
 class DistributionListView(LoginRequiredMixin, ListView):
+    """Контроллер страницы списка рассылок"""
     model = Distribution
 
     def get_queryset(self):
@@ -127,6 +144,7 @@ class DistributionListView(LoginRequiredMixin, ListView):
         return queryset
 
     def post(self, request, *args, **kwargs):
+        """Метод позволяет менеджеру приостанавливать/возобновлять рассылку"""
         pk = request.POST.get('pk')
         distribution = Distribution.objects.get(pk=pk)
         if distribution.status != 'paused':
@@ -138,6 +156,7 @@ class DistributionListView(LoginRequiredMixin, ListView):
 
 
 class DistributionDetailView(LoginRequiredMixin, DetailView):
+    """Контроллер страницы детальной информации о рассылке"""
     model = Distribution
 
     def post(self, request, *args, **kwargs):
@@ -166,6 +185,7 @@ class DistributionDetailView(LoginRequiredMixin, DetailView):
 
 
 class DistributionCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    """Контроллер страницы создания новой рассылки"""
     model = Distribution
     form_class = DistributionForm
     success_url = reverse_lazy('service:distribution_list')
@@ -187,6 +207,7 @@ class DistributionCreateView(LoginRequiredMixin, PermissionRequiredMixin, Create
 
 
 class DistributionUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    """Контроллер страницы редактирования рассылки"""
     model = Distribution
     form_class = DistributionForm
     success_url = reverse_lazy('service:distribution_list')
@@ -207,12 +228,22 @@ class DistributionUpdateView(LoginRequiredMixin, PermissionRequiredMixin, Update
 
 
 class DistributionDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    """Контроллер страницы удаления рассылки"""
     model = Distribution
     success_url = reverse_lazy('service:distribution_list')
     permission_required = 'service.delete_distribution'
 
+
 class AttempListView(LoginRequiredMixin, ListView):
+    """Контроллер страницы списка попыток рассылок"""
     model = Attemp
+
+    def render_to_response(self, context, **response_kwargs):
+        """Клиентское кэширование страницы 'Попытки рассылок' на 60 секунд"""
+        response = super().render_to_response(context, **response_kwargs)
+        response['Cache-Control'] = 'max-age=60'
+        return response
+
     def get_queryset(self):
         """Метод фильтрует попытки отправки рассылок из БД, предоставляя только созданных текущим пользователем,
         если он не является менеджером"""
@@ -223,10 +254,11 @@ class AttempListView(LoginRequiredMixin, ListView):
         else:
             return queryset.filter(owner=user)
 
+
 @login_required()
-def main(requests):
+def main(request):
     """Контроллер главной страницы"""
-    user = requests.user
+    user = request.user
     if user.groups.filter(name="manager").exists():
         distributions = Distribution.objects.all()
         for obj in distributions:
@@ -236,19 +268,21 @@ def main(requests):
     else:
         distributions = Distribution.objects.filter(owner=user)
         for obj in distributions:
-            obj.update_status()
+            if not obj.status == 'paused':
+                obj.update_status()
         clients_count = Clients.objects.filter(owner=user).count()
         distributions_active = Distribution.objects.filter(owner=user, status='progress').count()
     distribution_count = distributions.count()
 
     context = {'distribution_count': distribution_count, 'distributions_active': distributions_active,
                'clients_count': clients_count}
-    return render(requests, 'service/main.html', context)
+    return render(request, 'service/main.html', context)
+
 
 @login_required()
-def get_statistic(requests):
+def get_statistic(request):
     """Контроллер страницы статистики рассылок пользователей"""
-    user = requests.user
+    user = request.user
     if user.groups.filter(name="manager").exists():
         attemps = Attemp.objects.all()
     else:
@@ -257,4 +291,4 @@ def get_statistic(requests):
     count_unsuccess = len(attemps) - count_success
     message = sum([attemp.count_emails for attemp in attemps if attemp.status_2 == 'Успешно'])
     context = {'count_success': count_success, 'count_unsuccess': count_unsuccess, 'message': message}
-    return render(requests, 'service/statistic.html', context)
+    return render(request, 'service/statistic.html', context)

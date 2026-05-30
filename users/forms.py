@@ -11,11 +11,15 @@ class StyleMixin:
             self.fields[field].widget.attrs.update({"class": "form-control"})
 
 class CustomCreationForm(StyleMixin, UserCreationForm):
+    """Класс формы создания нового пользователя"""
     class Meta(UserCreationForm.Meta):
+        """Метакласс формы создания нового пользователя"""
         model = CustomUser
         fields = ['email', 'password1', 'password2']
 
 class UserAuthenticationForm(StyleMixin, AuthenticationForm):
+    """Класс формы аутентификации пользователя"""
     class Meta(AuthenticationForm):
+        """Метакласс формы аутентификации пользователя"""
         model = CustomUser
         fields = ['email', 'password']

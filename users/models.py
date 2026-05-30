@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class CustomUser(AbstractUser):
-    """Класс информации о пользователе"""
+    """Класс создания экземпляра пользователя"""
 
     username = None
     email = models.EmailField(verbose_name="email", unique=True)
@@ -13,5 +13,5 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        """Магический метод, возвращающий электронную почту пользователя"""
+        """Магический метод возвращает электронную почту пользователя"""
         return self.email

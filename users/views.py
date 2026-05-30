@@ -6,6 +6,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, reverse, render
 from django.contrib.auth.models import Permission
+from django.contrib.auth.decorators import login_required
 
 from config.settings import EMAIL_HOST_USER
 from users.forms import CustomCreationForm, UserAuthenticationForm
@@ -13,7 +14,7 @@ from users.models import CustomUser
 
 
 class RegisterView(CreateView):
-    """Класс контроллера создания нового пользователя"""
+    """Контроллер страницы создания нового пользователя"""
     model = CustomUser
     form_class = CustomCreationForm
     success_url = reverse_lazy('users:success_register')
@@ -64,31 +65,33 @@ def add_permissions(user):
                               delete_distribution_permission, )
 
 class CustomLoginView(LoginView):
-    """Класс контроллера входа пользователя в аккаунт"""
+    """Контроллер страницы входа пользователя в аккаунт"""
     model = CustomUser
     form_class = UserAuthenticationForm
     template_name = 'users/login.html'
 
 
 class CustomLogoutView(LogoutView):
-    """Класс контроллера выхода пользователя из аккаунта"""
+    """Контроллер страницы выхода пользователя из аккаунта"""
     model = CustomUser
 
 
 def success_register(request):
-    """Представление, рендерирующее страницу успешной регистрации пользователя"""
+    """Контроллер, рендерирующий страницу успешной регистрации пользователя"""
     return render(request, 'users/success_register.html')
 
-def get_users(requests):
+@login_required()
+def get_users(request):
     """Контроллер страницы списка пользователей"""
     users = CustomUser.objects.all()
     context = {'users':users,}
-    return render(requests, 'users/list_users.html', context=context)
+    return render(request, 'users/list_users.html', context=context)
 
-def users_block(requests, pk):
-    """Контроллер для блокировки/разблокировки пользователя"""
+@login_required()
+def users_block(request, pk):
+    """Контроллер страницы для блокировки/разблокировки пользователя"""
     user = CustomUser.objects.get(pk=pk)
-    if requests.method == 'POST':
+    if request.method == 'POST':
         if user.is_active:
             user.is_active = False
         else:
@@ -97,17 +100,4 @@ def users_block(requests, pk):
         return redirect('/users/list_users')
     else:
         context = {'user':user}
-        return render(requests, 'users/users_block.html', context=context)
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return render(request, 'users/users_block.html', context=context)

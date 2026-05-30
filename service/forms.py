@@ -6,7 +6,9 @@ from service.models import Clients, Message, Distribution
 
 
 class StyleMixin:
+    """Миксин создающий экземпляр класса для стилизации web-страниц"""
     def __init__(self, *args, **kwargs):
+        """Метод устанавливает стиль полей форм"""
         super().__init__(*args, **kwargs)
         for field in self.fields:
             if field not in ['start_time', 'end_time']:
@@ -16,24 +18,32 @@ class StyleMixin:
 
 
 class ClientsForm(StyleMixin, forms.ModelForm):
+    """Класс формы модели 'Clients'"""
     class Meta:
+        """Метакласс формы 'Clients'"""
         model = Clients
         exclude = ('owner',)
 
 
 class MessageForm(StyleMixin, forms.ModelForm):
+    """Класс формы модели 'Message'"""
     class Meta:
+        """Метакласс формы 'Message'"""
         model = Message
         fields = '__all__'
         exclude = ('owner',)
 
 class DistributionForm(StyleMixin, forms.ModelForm):
+    """Класс формы модели 'Distribution'"""
     class Meta:
+        """Метакласс формы 'Distribution'"""
         model = Distribution
         fields = '__all__'
         exclude = ('owner',)
 
     def clean(self):
+        """Метод валидирует поля времени отправки, запрещая отправку рассылки если:
+        время начала отправки меньше времени окончания отправки, время начала отправки меньше текущего времени"""
         cleaned_data = super().clean()
         start_time = cleaned_data.get('start_time')
         end_time = cleaned_data.get('end_time')
