@@ -1,188 +1,153 @@
 [
 {
     "model": "service.clients",
-    "pk": 1,
+    "pk": 8,
     "fields": {
-        "email": "veterwind666@rambler.ru",
-        "name": "БВС",
-        "comment": "что то"
+        "email": "1@mail.ru",
+        "name": "qqq",
+        "comment": "",
+        "owner": 1
     }
 },
 {
     "model": "service.clients",
-    "pk": 2,
+    "pk": 9,
     "fields": {
-        "email": "vvvv@mail.ru",
-        "name": "Иванов",
-        "comment": "чисто"
+        "email": "2@mail.ru",
+        "name": "www",
+        "comment": "",
+        "owner": 1
+    }
+},
+{
+    "model": "service.clients",
+    "pk": 14,
+    "fields": {
+        "email": "v@w.ru",
+        "name": "qq",
+        "comment": "",
+        "owner": 18
     }
 },
 {
     "model": "service.message",
-    "pk": 1,
+    "pk": 3,
     "fields": {
         "theme": "Сообщение_1",
-        "text": "что то"
+        "text": "",
+        "owner": 1
     }
 },
 {
-    "model": "service.distribution",
-    "pk": 1,
-    "fields": {
-        "start_time": "2026-05-24T12:12:00Z",
-        "end_time": "2026-05-24T12:15:00Z",
-        "status": "finished",
-        "message": 1,
-        "recipients": [
-            1
-        ]
-    }
-},
-{
-    "model": "service.distribution",
-    "pk": 2,
-    "fields": {
-        "start_time": "2026-05-25T18:24:00Z",
-        "end_time": "2026-05-26T21:12:00Z",
-        "status": "progress",
-        "message": 1,
-        "recipients": [
-            1,
-            2
-        ]
-    }
-},
-{
-    "model": "service.distribution",
-    "pk": 3,
-    "fields": {
-        "start_time": "2026-05-24T12:12:00Z",
-        "end_time": "2026-05-25T12:15:00Z",
-        "status": "finished",
-        "message": 1,
-        "recipients": [
-            1
-        ]
-    }
-},
-{
-    "model": "service.attemp",
-    "pk": 2,
-    "fields": {
-        "attempt_time": "2026-05-25T20:08:39.164Z",
-        "status_2": "Не успешно",
-        "server_response": "\"to\" argument must be a list or tuple",
-        "mailing": 2
-    }
-},
-{
-    "model": "service.attemp",
-    "pk": 3,
-    "fields": {
-        "attempt_time": "2026-05-25T20:08:39.461Z",
-        "status_2": "Не успешно",
-        "server_response": "\"to\" argument must be a list or tuple",
-        "mailing": 2
-    }
-},
-{
-    "model": "service.attemp",
+    "model": "service.message",
     "pk": 4,
     "fields": {
-        "attempt_time": "2026-05-25T20:12:11.117Z",
-        "status_2": "Успешно",
-        "server_response": "Сообщений нет",
-        "mailing": 2
+        "theme": "Сообщение_2",
+        "text": "",
+        "owner": 1
     }
 },
 {
-    "model": "service.attemp",
-    "pk": 5,
-    "fields": {
-        "attempt_time": "2026-05-25T20:12:12.971Z",
-        "status_2": "Успешно",
-        "server_response": "Сообщений нет",
-        "mailing": 2
-    }
-},
-{
-    "model": "service.attemp",
-    "pk": 6,
-    "fields": {
-        "attempt_time": "2026-05-25T20:13:58.459Z",
-        "status_2": "Успешно",
-        "server_response": "Сообщений нет",
-        "mailing": 2
-    }
-},
-{
-    "model": "service.attemp",
-    "pk": 7,
-    "fields": {
-        "attempt_time": "2026-05-25T20:14:00.724Z",
-        "status_2": "Успешно",
-        "server_response": "Сообщений нет",
-        "mailing": 2
-    }
-},
-{
-    "model": "service.attemp",
+    "model": "service.message",
     "pk": 8,
     "fields": {
-        "attempt_time": "2026-05-25T20:22:22.198Z",
-        "status_2": "Успешно",
-        "server_response": "Сообщений нет",
-        "mailing": 2
+        "theme": "Сообщение_3",
+        "text": "wert",
+        "owner": 18
     }
 },
 {
-    "model": "service.attemp",
+    "model": "service.distribution",
+    "pk": 8,
+    "fields": {
+        "start_time": "2026-05-28T16:37:00Z",
+        "end_time": "2026-05-29T15:25:00Z",
+        "status": "finished",
+        "message": 3,
+        "owner": 1,
+        "recipients": [
+            8,
+            9
+        ]
+    }
+},
+{
+    "model": "service.distribution",
     "pk": 9,
     "fields": {
-        "attempt_time": "2026-05-25T20:22:26.509Z",
-        "status_2": "Успешно",
-        "server_response": "Сообщений нет",
-        "mailing": 2
+        "start_time": "2026-05-29T15:26:00Z",
+        "end_time": "2026-05-29T15:27:00Z",
+        "status": "finished",
+        "message": 4,
+        "owner": 1,
+        "recipients": [
+            8,
+            9
+        ]
     }
 },
 {
-    "model": "service.attemp",
-    "pk": 10,
-    "fields": {
-        "attempt_time": "2026-05-26T08:43:53.560Z",
-        "status_2": "Успешно",
-        "server_response": "Сообщений нет",
-        "mailing": 2
-    }
-},
-{
-    "model": "service.attemp",
-    "pk": 11,
-    "fields": {
-        "attempt_time": "2026-05-26T08:43:55.935Z",
-        "status_2": "Успешно",
-        "server_response": "Сообщений нет",
-        "mailing": 2
-    }
-},
-{
-    "model": "service.attemp",
-    "pk": 12,
-    "fields": {
-        "attempt_time": "2026-05-26T08:45:03.297Z",
-        "status_2": "Успешно",
-        "server_response": "Сообщений нет",
-        "mailing": 2
-    }
-},
-{
-    "model": "service.attemp",
+    "model": "service.distribution",
     "pk": 13,
     "fields": {
-        "attempt_time": "2026-05-26T08:45:04.587Z",
+        "start_time": "2026-05-28T22:03:00Z",
+        "end_time": "2026-05-29T12:14:00Z",
+        "status": "finished",
+        "message": 8,
+        "owner": 18,
+        "recipients": [
+            14
+        ]
+    }
+},
+{
+    "model": "service.distribution",
+    "pk": 14,
+    "fields": {
+        "start_time": "2026-05-30T13:08:00Z",
+        "end_time": "2026-05-30T13:12:00Z",
+        "status": "progress",
+        "message": 8,
+        "owner": 18,
+        "recipients": [
+            14
+        ]
+    }
+},
+{
+    "model": "service.attemp",
+    "pk": 23,
+    "fields": {
+        "attempt_time": "2026-05-28T16:34:55.596Z",
         "status_2": "Успешно",
         "server_response": "Сообщений нет",
-        "mailing": 2
+        "mailing": 8,
+        "count_emails": 1,
+        "owner": 1
+    }
+},
+{
+    "model": "service.attemp",
+    "pk": 24,
+    "fields": {
+        "attempt_time": "2026-05-28T16:37:02.793Z",
+        "status_2": "Успешно",
+        "server_response": "Сообщений нет",
+        "mailing": 8,
+        "count_emails": 2,
+        "owner": 1
+    }
+},
+{
+    "model": "service.attemp",
+    "pk": 26,
+    "fields": {
+        "attempt_time": "2026-05-30T13:08:09.308Z",
+        "status_2": "Успешно",
+        "server_response": "Сообщений нет",
+        "mailing": 14,
+        "count_emails": 1,
+        "owner": 18
     }
 }
 ]

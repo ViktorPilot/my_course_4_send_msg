@@ -2,52 +2,61 @@ from datetime import datetime
 
 from django import forms
 from django.core.exceptions import ValidationError
-from service.models import Clients, Message, Distribution
+
+from service.models import Clients, Distribution, Message
 
 
 class StyleMixin:
     """Миксин создающий экземпляр класса для стилизации web-страниц"""
+
     def __init__(self, *args, **kwargs):
         """Метод устанавливает стиль полей форм"""
         super().__init__(*args, **kwargs)
         for field in self.fields:
-            if field not in ['start_time', 'end_time']:
-                self.fields[field].widget.attrs.update({'class': 'form-control'})
+            if field not in ["start_time", "end_time"]:
+                self.fields[field].widget.attrs.update({"class": "form-control"})
             else:
-                self.fields[field].widget.attrs.update({'class': 'form-control', 'placeholder': 'YYYY-MM-DD HH:MM'})
+                self.fields[field].widget.attrs.update({"class": "form-control", "placeholder": "YYYY-MM-DD HH:MM"})
 
 
 class ClientsForm(StyleMixin, forms.ModelForm):
     """Класс формы модели 'Clients'"""
+
     class Meta:
         """Метакласс формы 'Clients'"""
+
         model = Clients
-        exclude = ('owner',)
+        exclude = ("owner",)
 
 
 class MessageForm(StyleMixin, forms.ModelForm):
     """Класс формы модели 'Message'"""
+
     class Meta:
         """Метакласс формы 'Message'"""
+
         model = Message
-        fields = '__all__'
-        exclude = ('owner',)
+        fields = "__all__"
+        exclude = ("owner",)
+
 
 class DistributionForm(StyleMixin, forms.ModelForm):
     """Класс формы модели 'Distribution'"""
+
     class Meta:
         """Метакласс формы 'Distribution'"""
+
         model = Distribution
-        fields = '__all__'
-        exclude = ('owner',)
+        fields = "__all__"
+        exclude = ("owner",)
 
     def clean(self):
         """Метод валидирует поля времени отправки, запрещая отправку рассылки если:
         время начала отправки меньше времени окончания отправки, время начала отправки меньше текущего времени"""
         cleaned_data = super().clean()
-        start_time = cleaned_data.get('start_time')
-        end_time = cleaned_data.get('end_time')
+        start_time = cleaned_data.get("start_time")
+        end_time = cleaned_data.get("end_time")
         if start_time >= end_time:
-            raise ValidationError('Время начала отправки должно быть меньше времени окончания отправки!')
+            raise ValidationError("Время начала отправки должно быть меньше времени окончания отправки!")
         elif datetime.now() > start_time.replace(tzinfo=None):
-            raise ValidationError('Время начала отправки должно быть меньше текущего времени!')
+            raise ValidationError("Время начала отправки должно быть меньше текущего времени!")

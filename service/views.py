@@ -1,22 +1,22 @@
 from datetime import datetime
 
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
-from django.urls import reverse_lazy
-from django.shortcuts import render, redirect
-from django.core.mail import send_mail
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.cache import cache_page
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.mail import send_mail
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from config.settings import EMAIL_HOST_USER
-from service.forms import ClientsForm, MessageForm, DistributionForm
-from service.models import Clients, Message, Distribution, Attemp
-
+from service.forms import ClientsForm, DistributionForm, MessageForm
+from service.models import Attemp, Clients, Distribution, Message
 
 
 class ClientsListView(LoginRequiredMixin, ListView):
     """Контроллер страницы списка клиентов"""
+
     model = Clients
 
     def get_queryset(self):
@@ -30,18 +30,20 @@ class ClientsListView(LoginRequiredMixin, ListView):
             return queryset.filter(owner=user)
 
 
-@method_decorator(cache_page(60), name='dispatch')
+@method_decorator(cache_page(60), name="dispatch")
 class ClientsDetailView(LoginRequiredMixin, DetailView):
     """Контроллер страницы детальной информации о клиенте"""
+
     model = Clients
 
 
 class ClientsCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     """Контроллер страницы создания нового клиента"""
+
     model = Clients
     form_class = ClientsForm
-    success_url = reverse_lazy('service:clients_list')
-    permission_required = 'service.add_clients'
+    success_url = reverse_lazy("service:clients_list")
+    permission_required = "service.add_clients"
 
     def form_valid(self, form):
         """Метод добавляет текущего пользователя в поле базы данных Clients при создании нового клиента"""
@@ -52,10 +54,11 @@ class ClientsCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 
 class ClientsUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     """Контроллер страницы редактирования информации о клиенте"""
+
     model = Clients
     form_class = ClientsForm
-    success_url = reverse_lazy('service:clients_list')
-    permission_required = 'service.change_clients'
+    success_url = reverse_lazy("service:clients_list")
+    permission_required = "service.change_clients"
 
     def form_valid(self, form):
         """Метод добавляет текущего пользователя в поле базы данных Clients при обновлении пользователя"""
@@ -66,13 +69,15 @@ class ClientsUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
 
 class ClientsDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     """Контроллер страницы удаления клиента"""
+
     model = Clients
-    success_url = reverse_lazy('service:clients_list')
-    permission_required = 'service.delete_clients'
+    success_url = reverse_lazy("service:clients_list")
+    permission_required = "service.delete_clients"
 
 
 class MessageListView(LoginRequiredMixin, ListView):
     """Контроллер страницы списка сообщений"""
+
     model = Message
 
     def get_queryset(self):
@@ -86,18 +91,20 @@ class MessageListView(LoginRequiredMixin, ListView):
             return queryset.filter(owner=user)
 
 
-@method_decorator(cache_page(60), name='dispatch')
+@method_decorator(cache_page(60), name="dispatch")
 class MessageDetailView(LoginRequiredMixin, DetailView):
     """Контроллер страницы детальной информации о сообщении"""
+
     model = Message
 
 
 class MessageCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     """Контроллер страницы создания нового сообщения"""
+
     model = Message
     form_class = MessageForm
-    success_url = reverse_lazy('service:message_list')
-    permission_required = 'service.add_message'
+    success_url = reverse_lazy("service:message_list")
+    permission_required = "service.add_message"
 
     def form_valid(self, form):
         """Метод добавляет текущего пользователя в поле базы данных Message при создании нового сообщения"""
@@ -108,10 +115,11 @@ class MessageCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 
 class MessageUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     """Контроллер страницы редактирования сообщения"""
+
     model = Message
     form_class = MessageForm
-    success_url = reverse_lazy('service:message_list')
-    permission_required = 'service.change_message'
+    success_url = reverse_lazy("service:message_list")
+    permission_required = "service.change_message"
 
     def form_valid(self, form):
         """Метод добавляет текущего пользователя в поле базы данных Message при обновлении сообщения"""
@@ -122,13 +130,15 @@ class MessageUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
 
 class MessageDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     """Контроллер страницы удаления сообщения"""
+
     model = Message
-    success_url = reverse_lazy('service:message_list')
-    permission_required = 'service.delete_message'
+    success_url = reverse_lazy("service:message_list")
+    permission_required = "service.delete_message"
 
 
 class DistributionListView(LoginRequiredMixin, ListView):
     """Контроллер страницы списка рассылок"""
+
     model = Distribution
 
     def get_queryset(self):
@@ -139,64 +149,75 @@ class DistributionListView(LoginRequiredMixin, ListView):
         if not user.groups.filter(name="manager").exists():
             queryset = queryset.filter(owner=user)
         for obj in queryset:
-            if not obj.status == 'paused':
+            if not obj.status == "paused":
                 obj.update_status()
         return queryset
 
     def post(self, request, *args, **kwargs):
         """Метод позволяет менеджеру приостанавливать/возобновлять рассылку"""
-        pk = request.POST.get('pk')
+        pk = request.POST.get("pk")
         distribution = Distribution.objects.get(pk=pk)
-        if distribution.status != 'paused':
-            distribution.status = 'paused'
+        if distribution.status != "paused":
+            distribution.status = "paused"
         else:
-            distribution.status = 'create'
+            distribution.status = "create"
         distribution.save()
-        return redirect('/service/distribution')
+        return redirect("/service/distribution")
 
 
 class DistributionDetailView(LoginRequiredMixin, DetailView):
     """Контроллер страницы детальной информации о рассылке"""
+
     model = Distribution
 
     def post(self, request, *args, **kwargs):
         """Метод отправляет рассылку получателям при выполнении условий: если статус рассылки
         не приостановлен модератором и текущее дата/время находятся в диапазоне возможного периода рассылки"""
         obj = self.get_object()
-        if obj is not None and obj.start_time.replace(
-                tzinfo=None) < datetime.now() < obj.end_time.replace(tzinfo=None) and obj.status != 'paused':
-            emails = list(obj.recipients.values_list('email', flat=True))
+        if (
+            obj is not None
+            and obj.start_time.replace(tzinfo=None) < datetime.now() < obj.end_time.replace(tzinfo=None)
+            and obj.status != "paused"
+        ):
+            emails = list(obj.recipients.values_list("email", flat=True))
             try:
                 send_mail(obj.message.theme, obj.message.text, EMAIL_HOST_USER, emails)
-                status = 'Успешно'
-                server_response = 'Сообщений нет'
+                status = "Успешно"
+                server_response = "Сообщений нет"
             except Exception as e:
-                status = 'Не успешно'
+                status = "Не успешно"
                 server_response = str(e)
             finally:
                 count_emails = len(emails)
                 attempt_time = datetime.now()
                 owner = request.user
-            Attemp.objects.create(attempt_time=attempt_time, status_2=status, server_response=server_response,
-                                  mailing=obj, count_emails=count_emails, owner=owner)
-            return render(request, 'service/distribution_success.html')
+            Attemp.objects.create(
+                attempt_time=attempt_time,
+                status_2=status,
+                server_response=server_response,
+                mailing=obj,
+                count_emails=count_emails,
+                owner=owner,
+            )
+            return render(request, "service/distribution_success.html")
         else:
-            return render(request, 'service/distribution_unsuccess.html')
+            return render(request, "service/distribution_unsuccess.html")
 
 
 class DistributionCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     """Контроллер страницы создания новой рассылки"""
+
     model = Distribution
     form_class = DistributionForm
-    success_url = reverse_lazy('service:distribution_list')
-    permission_required = 'service.add_distribution'
+    success_url = reverse_lazy("service:distribution_list")
+    permission_required = "service.add_distribution"
 
     def get_form(self, form_class=None):
         """Метод фильтрует список клиентов в форме, предоставляя только созданных текущим пользователем"""
         user = self.request.user
         form = super().get_form(form_class)
-        form.fields['recipients'].queryset = Clients.objects.filter(owner=user)
-        form.fields['message'].queryset = Message.objects.filter(owner=user)
+        form.fields["recipients"].queryset = Clients.objects.filter(owner=user)
+        form.fields["message"].queryset = Message.objects.filter(owner=user)
         return form
 
     def form_valid(self, form):
@@ -208,16 +229,17 @@ class DistributionCreateView(LoginRequiredMixin, PermissionRequiredMixin, Create
 
 class DistributionUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     """Контроллер страницы редактирования рассылки"""
+
     model = Distribution
     form_class = DistributionForm
-    success_url = reverse_lazy('service:distribution_list')
-    permission_required = 'service.change_distribution'
+    success_url = reverse_lazy("service:distribution_list")
+    permission_required = "service.change_distribution"
 
     def get_form(self, form_class=None):
         """Метод фильтрует список клиентов в форме, предоставляя только созданных текущим пользователем"""
         user = self.request.user
         form = super().get_form(form_class)
-        form.fields['recipients'].queryset = Clients.objects.filter(owner=user)
+        form.fields["recipients"].queryset = Clients.objects.filter(owner=user)
         return form
 
     def form_valid(self, form):
@@ -229,19 +251,21 @@ class DistributionUpdateView(LoginRequiredMixin, PermissionRequiredMixin, Update
 
 class DistributionDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     """Контроллер страницы удаления рассылки"""
+
     model = Distribution
-    success_url = reverse_lazy('service:distribution_list')
-    permission_required = 'service.delete_distribution'
+    success_url = reverse_lazy("service:distribution_list")
+    permission_required = "service.delete_distribution"
 
 
 class AttempListView(LoginRequiredMixin, ListView):
     """Контроллер страницы списка попыток рассылок"""
+
     model = Attemp
 
     def render_to_response(self, context, **response_kwargs):
         """Клиентское кэширование страницы 'Попытки рассылок' на 60 секунд"""
         response = super().render_to_response(context, **response_kwargs)
-        response['Cache-Control'] = 'max-age=60'
+        response["Cache-Control"] = "max-age=60"
         return response
 
     def get_queryset(self):
@@ -264,19 +288,22 @@ def main(request):
         for obj in distributions:
             obj.update_status()
         clients_count = Clients.objects.all().count()
-        distributions_active = Distribution.objects.filter(status='progress').count()
+        distributions_active = Distribution.objects.filter(status="progress").count()
     else:
         distributions = Distribution.objects.filter(owner=user)
         for obj in distributions:
-            if not obj.status == 'paused':
+            if not obj.status == "paused":
                 obj.update_status()
         clients_count = Clients.objects.filter(owner=user).count()
-        distributions_active = Distribution.objects.filter(owner=user, status='progress').count()
+        distributions_active = Distribution.objects.filter(owner=user, status="progress").count()
     distribution_count = distributions.count()
 
-    context = {'distribution_count': distribution_count, 'distributions_active': distributions_active,
-               'clients_count': clients_count}
-    return render(request, 'service/main.html', context)
+    context = {
+        "distribution_count": distribution_count,
+        "distributions_active": distributions_active,
+        "clients_count": clients_count,
+    }
+    return render(request, "service/main.html", context)
 
 
 @login_required()
@@ -287,8 +314,8 @@ def get_statistic(request):
         attemps = Attemp.objects.all()
     else:
         attemps = Attemp.objects.filter(owner=user)
-    count_success = len([attemp for attemp in attemps if attemp.status_2 == 'Успешно'])
+    count_success = len([attemp for attemp in attemps if attemp.status_2 == "Успешно"])
     count_unsuccess = len(attemps) - count_success
-    message = sum([attemp.count_emails for attemp in attemps if attemp.status_2 == 'Успешно'])
-    context = {'count_success': count_success, 'count_unsuccess': count_unsuccess, 'message': message}
-    return render(request, 'service/statistic.html', context)
+    message = sum([attemp.count_emails for attemp in attemps if attemp.status_2 == "Успешно"])
+    context = {"count_success": count_success, "count_unsuccess": count_unsuccess, "message": message}
+    return render(request, "service/statistic.html", context)

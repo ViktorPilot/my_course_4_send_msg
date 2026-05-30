@@ -1,10 +1,25 @@
-from service import views
-from service.apps import ServiceConfig
 from django.urls import path
 
-from service.views import ClientsListView, ClientsDetailView, ClientsUpdateView, ClientsCreateView, ClientsDeleteView, \
-    MessageListView, MessageUpdateView, MessageCreateView, MessageDeleteView, MessageDetailView, DistributionListView, \
-    DistributionUpdateView, DistributionCreateView, DistributionDeleteView, DistributionDetailView, AttempListView, main
+from service import views
+from service.apps import ServiceConfig
+from service.views import (
+    AttempListView,
+    ClientsCreateView,
+    ClientsDeleteView,
+    ClientsDetailView,
+    ClientsListView,
+    ClientsUpdateView,
+    DistributionCreateView,
+    DistributionDeleteView,
+    DistributionDetailView,
+    DistributionListView,
+    DistributionUpdateView,
+    MessageCreateView,
+    MessageDeleteView,
+    MessageDetailView,
+    MessageListView,
+    MessageUpdateView,
+)
 
 app_name = ServiceConfig.name
 

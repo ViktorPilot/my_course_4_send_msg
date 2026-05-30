@@ -1,5 +1,7 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+
 from users.models import CustomUser
+
 
 class StyleMixin:
     """Миксин создающий экземпляр класса для стилизации web-страницы"""
@@ -10,16 +12,22 @@ class StyleMixin:
         for field in self.fields:
             self.fields[field].widget.attrs.update({"class": "form-control"})
 
+
 class CustomCreationForm(StyleMixin, UserCreationForm):
     """Класс формы создания нового пользователя"""
+
     class Meta(UserCreationForm.Meta):
         """Метакласс формы создания нового пользователя"""
+
         model = CustomUser
-        fields = ['email', 'password1', 'password2']
+        fields = ["email", "password1", "password2"]
+
 
 class UserAuthenticationForm(StyleMixin, AuthenticationForm):
     """Класс формы аутентификации пользователя"""
+
     class Meta(AuthenticationForm):
         """Метакласс формы аутентификации пользователя"""
+
         model = CustomUser
-        fields = ['email', 'password']
+        fields = ["email", "password"]
