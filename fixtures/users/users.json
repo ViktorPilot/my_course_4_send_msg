@@ -1,0 +1,68 @@
+[
+{
+    "model": "users.customuser",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$btd2Ben2YCbdoNHkMMPx2z$hl7o3+f+ijMcmsulC3p2hXgc7sSJvcRcE9svRD5sUG8=",
+        "last_login": "2026-05-28T15:19:49.198Z",
+        "is_superuser": true,
+        "first_name": "",
+        "last_name": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-05-26T07:47:44.154Z",
+        "email": "vvvv@mail.ru",
+        "token": null,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.customuser",
+    "pk": 16,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$cHWjONp1XTRVkzvo3d5CDx$QE7W8UJ/f4e1Sd0kWDge/8sB8NLNDUsQSdGWKo4keSU=",
+        "last_login": "2026-05-30T11:32:15.275Z",
+        "is_superuser": false,
+        "first_name": "",
+        "last_name": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-05-28T10:19:21Z",
+        "email": "viktorbukotin0@gmail.com",
+        "token": "3f4482f77b87027360384f53b64c5b43",
+        "groups": [
+            1
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.customuser",
+    "pk": 18,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$LYIDZDI7XukqYZQNb416FB$pUq8NrDPJZ0AR8VuU6GQdfqFxbzk5Eyeg+6B8yY5iGg=",
+        "last_login": "2026-05-30T10:05:27.615Z",
+        "is_superuser": false,
+        "first_name": "",
+        "last_name": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-05-28T15:20:27.504Z",
+        "email": "veterwind666@rambler.ru",
+        "token": "ef55ecbbc81bae9dbdcd9c5f8d89cab8",
+        "groups": [],
+        "user_permissions": [
+            21,
+            22,
+            23,
+            29,
+            30,
+            31,
+            25,
+            26,
+            27
+        ]
+    }
+}
+]

@@ -1,0 +1,20 @@
+{% extends 'service/base.html' %}
+{% block title %}statistic{% endblock %}
+{% block content %}
+<h1 class="text-center mt-5">Статистика рассылок</h1>
+<table class="table table-dark table-striped mt-5 text-center">
+    <thead>
+    <tr>
+        <th scope="col" class="text-uppercase">Успешных рассылок</th>
+        <th scope="col" class="text-uppercase">Неуспешных рассылок</th>
+        <th scope="col" class="text-uppercase">Количество отправленных сообщений</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class='text-center'>
+        <td class="fst-italic">{{ count_success }}</td>
+        <td class="fst-italic">{{ count_unsuccess }}</td>
+        <td class="fst-italic">{{ message }}</td>
+    </tr>
+</table>
+{% endblock %}

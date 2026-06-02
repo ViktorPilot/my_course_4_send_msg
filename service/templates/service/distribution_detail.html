@@ -1,0 +1,51 @@
+{% extends 'service/base.html' %}
+{% block title %}distribution_detail{% endblock %}
+{% block content %}
+<h1 class="text-center mt-5">Информация о рассылке</h1>
+<table class="table table-dark table-striped mt-5">
+    <thead>
+    <tr>
+        <th scope="col" class="text-uppercase">id</th>
+        <th scope="col" class="text-uppercase">Первая отправка</th>
+        <th scope="col" class="text-uppercase">Крайняя отправка</th>
+        <th scope="col" class="text-uppercase">Статус</th>
+        <th scope="col" class="text-uppercase">Сообщение рассылки</th>
+        <th scope="col" class="text-uppercase">Получатели</th>
+        <th scope="col" class="text-uppercase"></th>
+        <th scope="col" class="text-uppercase"></th>
+        <th scope="col" class="text-uppercase"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th scope="row" class="fst-italic">{{ object.pk }}</th>
+        <td class="fst-italic">{{ object.start_time }}</td>
+        <td class="fst-italic">{{ object.end_time }}</td>
+        <td class="fst-italic">{{ object.status }}</td>
+        <td class="fst-italic">{{ object.message }}</td>
+        <td class="fst-italic">
+            {% for obj in object.recipients.all %}
+            {{ obj.email }}
+            {% endfor %}
+        </td>
+        {% if request.user == distribution.owner %}
+        <td><a href="{% url 'service:distribution_update' object.pk %}">
+            <button type="button" class="btn btn-outline-primary btn-sm">Редактировать</button>
+        </a></td>
+        <td><a href="{% url 'service:distribution_delete' object.pk %}">
+            <button type="button" class="btn btn-outline-danger btn-sm">Удалить</button>
+        </a></td>
+        <td>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-success btn-sm">Отправить</button>
+            </form>
+        </td>
+        {% else %}
+        <td></td>
+        <td></td>
+        <td></td>
+        {% endif %}
+    </tr>
+</table>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'service/base.html' %}
+{% block title %}users_block{% endblock %}
+{% block content %}
+{% if user.is_active %}
+<h1 class="text-center mt-5">Блокировка пользователя</h1>
+{% else %}
+<h1 class="text-center mt-5">Разблокировка пользователя</h1>
+{% endif %}
+<div class="card text-bg-dark mb-3 mt-5 mx-auto" style="max-width: 20rem;">
+    <div class="card-body text-center">
+        {% if user.is_active %}
+        <h5 class="text-center">Подтвердите блокировку</h5>
+        {% else %}
+        <h5 class="text-center">Подтвердите разблокировку</h5>
+        {% endif %}
+        <form method="post" class="mt-3">
+            {% csrf_token %}
+            {% if user.is_active %}
+            <button type="submit" class="btn btn-outline-danger btn-sm me-5">Заблокировать</button>
+            {% else %}
+            <button type="submit" class="btn btn-outline-success btn-sm me-5">Разблокировать</button>
+            {% endif %}
+            <a href="{% url 'users:list_users' %}"><button type="button" class="btn btn-outline-primary btn-sm">Отмена</button></a>
+        </form>
+    </div>
+</div>
+{% endblock %}

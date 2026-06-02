@@ -1,0 +1,26 @@
+{% extends 'service/base.html' %}
+{% block title %}attemp_list{% endblock %}
+{% block content %}
+<h1 class="text-center mt-5">Попытки отправки сообщений</h1>
+<table class="table table-dark table-striped mt-5 text-center">
+    <thead>
+    <tr>
+        <th scope="col" class="text-uppercase">id</th>
+        <th scope="col" class="text-uppercase">Дата и время попытки отправки сообщения</th>
+        <th scope="col" class="text-uppercase">Статус</th>
+        <th scope="col" class="text-uppercase">Ответ почтового сервера</th>
+        <th scope="col" class="text-uppercase">Рассылка</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for object in object_list %}
+    <tr>
+        <th scope="row" class="fst-italic">{{ object.pk }}</th>
+        <td class="fst-italic">{{ object.attempt_time }}</td>
+        <td class="fst-italic">{{ object.status_2 }}</td>
+        <td class="fst-italic">{{ object.server_response }}</td>
+        <td class="fst-italic">{{ object.mailing.id }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
